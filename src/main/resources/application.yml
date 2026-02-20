@@ -1,0 +1,35 @@
+server:
+  port: 8000
+  servlet:
+    context-path: /app
+  compression:
+    enabled: true
+    mime-types: application/json,application/xml
+    min-response-size: 1024
+logging:
+  config:
+    classpath: logs_generation.xml
+  file:
+    name: Logs/Log_Ryo_Fact.log
+spring:
+  mvc:
+    path match:
+      matching-strategy: ant_path_matcher
+  datasource:
+    password: 1234
+    url: jdbc:postgresql://localhost:5432/billing
+    username: postgres
+  jpa:
+    generate-ddl: false
+    hibernate.ddl-auto: create
+    show-sql: false
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+        hbm2ddl:
+          charset_name: UTF-8
+          import_files: scripts/0_configuration.sql
+settings:
+  api-key: Api-Key sKSIBI33.w4qsMT2x7pJo2iIzh7dtGlPeG28fBZ5Q
+  url-base: https://api.wisphub.net
