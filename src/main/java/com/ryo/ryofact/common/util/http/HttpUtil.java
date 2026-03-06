@@ -1,9 +1,7 @@
 package com.ryo.ryofact.common.util.http;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ryo.ryofact.billing.dto.api.TaskResponseError;
-import com.ryo.ryofact.common.exception_handler.ApiException;
+import com.ryo.ryofact.billing.dto.api.TaskResponse;
 import com.ryo.ryofact.common.exception_handler.ResourceNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 
@@ -57,22 +55,16 @@ public class HttpUtil {
         }
     }
 
-    public static <T, E> T  requestPost(String url, String jsonRequest, String valueAuthorization, Class<T> responseType, Class<E> responseTypeError) {
+    public static Object  requestPost(String url, String jsonRequest, String valueAuthorization) {
         HttpResponse<String> response = httpRequestPost(url, jsonRequest, valueAuthorization);
 
         if (response.statusCode() != 200 && response.statusCode() != 201 ) {
             log.error("Error en la petición POST: Código de estado {}", response.statusCode());
-
-            try {
-                E error = new ObjectMapper().readValue(response.body(), responseTypeError);
-                throw new ApiException((TaskResponseError) error);
-            } catch (JsonProcessingException e) {
-                throw new IllegalArgumentException("Error obteniendo objeto de respuesta con error");
-            }
+            return response.body();
         }
 
         try {
-            return new ObjectMapper().readValue(response.body(), responseType);
+            return new ObjectMapper().readValue(response.body(), TaskResponse.class);
         } catch (Exception ex) {
             log.error("Error al deserializar el JSON de respuesta petición POST.");
             throw new IllegalArgumentException("Error obteniendo respuesta");

@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/billing")
@@ -35,6 +36,6 @@ public class BillingController {
     @ApiResponse(responseCode = "201", description = "created")
     public ResponseEntity<?> savePayment(@RequestBody @Valid BillingCreate request) {
         String response = billingService.savePayment(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("response", response));
     }
 }

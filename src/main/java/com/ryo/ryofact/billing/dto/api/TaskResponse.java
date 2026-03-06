@@ -11,6 +11,6 @@ public class TaskResponse {
     @JsonProperty("task_id")
     private String taskId;
 
-    @JsonProperty("message")
+    @JsonProperty("messages")
     private List<String> messages;
 }

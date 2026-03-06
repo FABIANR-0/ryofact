@@ -1,0 +1,16 @@
+
+services:
+  ### Posgres database for bill
+  db-bill:
+    container_name: db-bill
+    image: postgres:15.2
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: billing
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+    ports:
+      - 5432:5432
+    expose:
+      - 5432
+    command: -p 5432

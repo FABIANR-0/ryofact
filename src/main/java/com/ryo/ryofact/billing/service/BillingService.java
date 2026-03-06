@@ -5,10 +5,8 @@ import com.ryo.ryofact.billing.dto.BillingRequest;
 import com.ryo.ryofact.billing.dto.api.Factura;
 import com.ryo.ryofact.billing.dto.api.FacturaResponse;
 import com.ryo.ryofact.billing.dto.api.TaskResponse;
-import com.ryo.ryofact.billing.dto.api.TaskResponseError;
 import com.ryo.ryofact.billing.entity.Billing;
 import com.ryo.ryofact.billing.repository.BillingRepository;
-import com.ryo.ryofact.common.exception_handler.ApiException;
 import com.ryo.ryofact.common.exception_handler.ConflictException;
 import com.ryo.ryofact.common.exception_handler.ResourceNotFoundException;
 import com.ryo.ryofact.common.util.http.HttpUtil;
@@ -64,7 +62,7 @@ public class BillingService {
 
             pendingBillings.addAll(foundBillingByClient);
 
-            urlFinal = billingResponse.getNext() != null ? billingResponse.getNext() : "";
+            urlFinal = billingResponse.getNext() != null ? billingResponse.getNext().replace("http", "https") : "";
             findResults = billingResponse.getNext() == null || pendingBillings.size() >= 2;
 
         }
@@ -107,37 +105,28 @@ public class BillingService {
         int times = 0;
 
         while (times < 3) {
-            try {
-                TaskResponse response = HttpUtil.requestPost(urlFinal, jsonBody, apiKey, TaskResponse.class, TaskResponseError.class);
-                Billing billing = Billing.create(
+            Object responseGeneral = HttpUtil.requestPost(urlFinal, jsonBody, apiKey);
+            Billing billing;
+            if (responseGeneral instanceof TaskResponse response) {
+                 billing = Billing.create(
                         reference,
                         request.getTotal(),
                         request.getBillingIdentifier(),
                         true,
                         response.toString()
                 );
-                billingRepository.save(billing);
-                times = 4;
-
-            } catch (Exception e) {
+                times = 3;
+            } else {
                 times++;
-                if (e instanceof ApiException apiException) {
-
-                    Billing billing = Billing.create(
-                            reference,
-                            request.getTotal(),
-                            request.getBillingIdentifier(),
-                            false,
-                            apiException.getError().toString()
-                    );
-
-                    billingRepository.save(billing);
-
-                } else {
-                    throw e;
-                }
+                 billing = Billing.create(
+                        reference,
+                        request.getTotal(),
+                        request.getBillingIdentifier(),
+                        false,
+                        responseGeneral.toString()
+                );
             }
-
+            billingRepository.save(billing);
         }
 
         return String.format("registro de pago para la referencia %s fue completado", request.getReference());
