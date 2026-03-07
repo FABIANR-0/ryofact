@@ -16,12 +16,12 @@ spring:
     path match:
       matching-strategy: ant_path_matcher
   datasource:
-    password: 1234
-    url: jdbc:postgresql://localhost:5432/billing
-    username: postgres
+    password: npg_frP0IYXx1qNc
+    url: jdbc:postgresql://ep-dawn-sunset-ae2ooy7z-pooler.c-2.us-east-2.aws.neon.tech/billing?sslmode=require&channel_binding=require
+    username: neondb_owner
   jpa:
     generate-ddl: false
-    hibernate.ddl-auto: create
+    hibernate.ddl-auto: update
     show-sql: false
     open-in-view: false
     properties:
