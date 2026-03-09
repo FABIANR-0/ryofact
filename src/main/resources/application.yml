@@ -6,6 +6,7 @@ server:
     enabled: true
     mime-types: application/json,application/xml
     min-response-size: 1024
+  forward-headers-strategy: framework
 logging:
   config:
     classpath: logs_generation.xml
@@ -33,3 +34,6 @@ spring:
 settings:
   api-key: Api-Key sKSIBI33.w4qsMT2x7pJo2iIzh7dtGlPeG28fBZ5Q
   url-base: https://api.wisphub.net
+springdoc:
+  swagger-ui:
+    use-root-path: true
