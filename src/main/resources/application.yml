@@ -13,6 +13,8 @@ logging:
   file:
     name: Logs/Log_Ryo_Fact.log
 spring:
+  jackson:
+    time-zone: America/Bogota
   mvc:
     path match:
       matching-strategy: ant_path_matcher

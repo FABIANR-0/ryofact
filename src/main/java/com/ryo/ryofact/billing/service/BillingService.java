@@ -86,7 +86,7 @@ public class BillingService {
 
 
     public String savePayment(BillingCreate request) {
-        if (billingRepository.existsBillingByBillingIdentifierWisphub(request.getBillingIdentifier()))
+        if (billingRepository.existsBillingByBillingIdentifierWisphubAndIsSaveWisphubIsTrue(request.getBillingIdentifier()))
             throw new ConflictException(String.format("La factura con identificador %s ya tiene registrado un pago", request.getBillingIdentifier()));
 
         String urlFinal = urlBase + "/api/facturas/" + request.getBillingIdentifier() + "/registrar-pago/";

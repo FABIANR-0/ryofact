@@ -20,13 +20,13 @@ public class Billing {
     @Column(name = "billing_id", nullable = false, unique = true)
     private Long billingId;
 
-    @Column(name = "payment_reference", nullable = false, unique = true)
+    @Column(name = "payment_reference", nullable = false)
     private String paymentReference;
 
     @Column(name = "total", nullable = false)
     private BigDecimal total;
 
-    @Column(name = "billing_identifier_wisphub", nullable = false, unique = true)
+    @Column(name = "billing_identifier_wisphub", nullable = false)
     private String billingIdentifierWisphub;
 
     @Column(name = "is_save_wisphub", nullable = false )
