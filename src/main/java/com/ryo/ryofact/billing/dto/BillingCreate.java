@@ -12,15 +12,15 @@ import java.math.BigDecimal;
 public class BillingCreate {
 
     @JsonProperty("billing_identifier")
-    @NotBlank
-    private String billingIdentifier;
+    @NotBlank(message = "el identificador de la factura no puede estar vacío o nulo")
+    private String billIdentifier;
 
     @JsonProperty("reference")
-    @NotBlank
+    @NotBlank(message = "la referencia de la factura no puede estar vacía o nula")
     private String reference;
 
     @JsonProperty("total")
-    @NotNull
-    @DecimalMin("0.1")
+    @NotNull(message = "el total a pagar de la factura no puede ser nulo")
+    @DecimalMin(value = "0.1", message = "el total a pagar de la factura debe ser mayor a 0.1")
     private BigDecimal total;
 }

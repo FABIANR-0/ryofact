@@ -8,9 +8,9 @@ import lombok.Data;
 public class BillingRequest {
 
     @JsonProperty("client_identifier")
-    @NotBlank
+    @NotBlank(message = "el identificador del cliente no puede estar vacío o nulo")
     private String clientIdentifier;
 
-    @JsonProperty("billing_identifier")
-    private String billingIdentifier;
+    @JsonProperty("bill_identifier")
+    private String billIdentifier;
 }

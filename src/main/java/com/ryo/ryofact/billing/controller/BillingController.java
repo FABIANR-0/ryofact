@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/billing")
+@RequestMapping("/bill")
 @AllArgsConstructor
 public class BillingController {
 

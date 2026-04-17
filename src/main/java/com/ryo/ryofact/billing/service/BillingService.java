@@ -37,7 +37,7 @@ public class BillingService {
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     public List<Factura> obtainInvoice(BillingRequest request) {
-        if (request.getBillingIdentifier() != null && !request.getBillingIdentifier().isEmpty()) {
+        if (request.getBillIdentifier() != null && !request.getBillIdentifier().isEmpty()) {
             return obtainInvoiceByBillingIdentifier(request);
         }
         LocalDate now = LocalDate.now().plusDays(1);
@@ -75,21 +75,21 @@ public class BillingService {
     }
 
     private List<Factura> obtainInvoiceByBillingIdentifier(BillingRequest request) {
-        String urlFinal = urlBase + "/api/facturas/" + request.getBillingIdentifier();
+        String urlFinal = urlBase + "/api/facturas/" + request.getBillIdentifier();
         Factura billingResponse = HttpUtil.requestGet(urlFinal, apiKey, Factura.class);
 
         if (billingResponse == null) {
-            throw new ResourceNotFoundException("No se encontró la factura con el identificador: " + request.getBillingIdentifier());
+            throw new ResourceNotFoundException("No se encontró la factura con el identificador: " + request.getBillIdentifier());
         }
         return List.of(billingResponse);
     }
 
 
     public String savePayment(BillingCreate request) {
-        if (billingRepository.existsBillingByBillingIdentifierWisphubAndIsSaveWisphubIsTrue(request.getBillingIdentifier()))
-            throw new ConflictException(String.format("La factura con identificador %s ya tiene registrado un pago", request.getBillingIdentifier()));
+        if (billingRepository.existsBillingByBillingIdentifierWisphubAndIsSaveWisphubIsTrue(request.getBillIdentifier()))
+            throw new ConflictException(String.format("La factura con identificador %s ya tiene registrado un pago", request.getBillIdentifier()));
 
-        String urlFinal = urlBase + "/api/facturas/" + request.getBillingIdentifier() + "/registrar-pago/";
+        String urlFinal = urlBase + "/api/facturas/" + request.getBillIdentifier() + "/registrar-pago/";
         String reference = "CDR_" + request.getReference() + "_MRO";
 
         String formattedDate = LocalDateTime.now().format(FORMATTER);
@@ -111,7 +111,7 @@ public class BillingService {
                  billing = Billing.create(
                         reference,
                         request.getTotal(),
-                        request.getBillingIdentifier(),
+                        request.getBillIdentifier(),
                         true,
                         response.toString()
                 );
@@ -121,7 +121,7 @@ public class BillingService {
                  billing = Billing.create(
                         reference,
                         request.getTotal(),
-                        request.getBillingIdentifier(),
+                        request.getBillIdentifier(),
                         false,
                         responseGeneral.toString()
                 );
