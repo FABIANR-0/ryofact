@@ -60,6 +60,3 @@ jobs:
           app-name: 'ryo-fact'
           slot-name: 'Production'
           package: '*SNAPSHOT.jar'
-        env:
-          API_KEY: ${{ secrets.API_KEY }}
-          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
