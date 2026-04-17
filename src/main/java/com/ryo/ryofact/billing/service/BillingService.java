@@ -63,7 +63,7 @@ public class BillingService {
             pendingBillings.addAll(foundBillingByClient);
 
             urlFinal = billingResponse.getNext() != null ? billingResponse.getNext().replace("http", "https") : "";
-            findResults = billingResponse.getNext() == null || pendingBillings.size() >= 2;
+            findResults = billingResponse.getNext() == null;
 
         }
 
