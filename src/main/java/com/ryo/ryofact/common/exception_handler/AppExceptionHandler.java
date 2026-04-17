@@ -19,12 +19,6 @@ public class AppExceptionHandler {
     @ExceptionHandler(value = ResourceNotFoundException.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    /**
-     * Maneja la excepción de recurso no encontrado.
-     *
-     * @param exception la excepción ResourceNotFoundException
-     * @return un mapa con el mensaje de error y el mensaje de la excepción
-     */
     public Map<String, String> handleResourceNotFoundException(ResourceNotFoundException exception) {
         Map<String, String> map = new HashMap<>();
         map.put("error", "Not found");
@@ -61,12 +55,6 @@ public class AppExceptionHandler {
         return map;
     }
 
-
-    /**
-     * Maneja la excepción de validación de argumentos de método no válidos.
-     * @param ex
-     * @return una lista de respuestas de error de campo
-     */
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -99,6 +87,26 @@ public class AppExceptionHandler {
         Map<String, String> map = new HashMap<>();
         map.put("message", exception.getMessage());
         log.error("ConflictException {}", exception.getMessage());
+        return map;
+    }
+
+    @ExceptionHandler(value = ServerErrorException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public Map<String, String> handleConflictException(ServerErrorException exception) {
+        Map<String, String> map = new HashMap<>();
+        map.put("message", exception.getMessage());
+        log.error("ServerErrorException {}", exception.getMessage());
+        return map;
+    }
+
+    @ExceptionHandler(value = UnauthorizedException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public Map<String, String> handleConflictException(UnauthorizedException exception) {
+        Map<String, String> map = new HashMap<>();
+        map.put("message", exception.getMessage());
+        log.error("UnauthorizedException {}", exception.getMessage());
         return map;
     }
 }
